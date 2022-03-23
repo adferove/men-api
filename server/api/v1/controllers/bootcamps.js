@@ -1,24 +1,35 @@
+const bootcamp = require('../models/Bootcamp.js');
+
 // @desc   Get all bootcamps
 // @route  /api/v1/bootcamps
 // @access Public
 exports.getBootcamps = (req, res, next) => {
-  res.status(200).json({ success: true, message: 'Get All bootcamps' });
+  bootcamp.find().then((data) => {
+    res.status(200).json({ success: true, data: data });
+  });
 };
 
 // @desc   Get bootcamp by id
 // @route  /api/v1/bootcamps/:id
 // @access Public
 exports.getBootcampById = (req, res, next) => {
-  res
-    .status(200)
-    .json({ success: true, message: `Get bootcamp ${req.params.id}` });
+  bootcamp
+    .findById(req.params.id)
+    .then((data) => {
+      res.status(200).json({ success: true, data: data });
+    })
+    .catch((err) => {
+      res.status(400).json({ success: false, message: err.message });
+    });
 };
 
 // @desc   Create new bootcamp
 // @route  /api/v1/bootcamps
 // @access Private
 exports.createBootcamp = (req, res, next) => {
-  res.status(200).json({ success: true, message: 'Post a new bootcamp' });
+  bootcamp.create(req.body).then((data) => {
+    res.status(200).json({ success: true, data: data });
+  });
 };
 
 // @desc   Update bootcamp by id
