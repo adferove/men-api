@@ -4,9 +4,14 @@ const bootcamp = require('../models/Bootcamp.js');
 // @route  /api/v1/bootcamps
 // @access Public
 exports.getBootcamps = (req, res, next) => {
-  bootcamp.find().then((data) => {
-    res.status(200).json({ success: true, data: data });
-  });
+  bootcamp
+    .find()
+    .then((data) => {
+      res.status(200).json({ success: true, data: data });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 // @desc   Get bootcamp by id
@@ -19,7 +24,7 @@ exports.getBootcampById = (req, res, next) => {
       res.status(200).json({ success: true, data: data });
     })
     .catch((err) => {
-      res.status(400).json({ success: false, message: err.message });
+      next(err);
     });
 };
 
@@ -27,25 +32,43 @@ exports.getBootcampById = (req, res, next) => {
 // @route  /api/v1/bootcamps
 // @access Private
 exports.createBootcamp = (req, res, next) => {
-  bootcamp.create(req.body).then((data) => {
-    res.status(200).json({ success: true, data: data });
-  });
+  bootcamp
+    .create(req.body)
+    .then((data) => {
+      res.status(200).json({ success: true, data: data });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 // @desc   Update bootcamp by id
 // @route  /api/v1/bootcamps/:id
 // @access Private
 exports.updateBootcampById = (req, res, next) => {
-  res
-    .status(200)
-    .json({ success: true, message: `Put bootcamp ${req.params.id}` });
+  bootcamp
+    .findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    })
+    .then((data) => {
+      res.status(200).json({ success: true, data: data });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 // @desc   Delete bootcamp by id
 // @route  /api/v1/bootcamps/:id
 // @access Private
 exports.deleteBootcampById = (req, res, next) => {
-  res
-    .status(200)
-    .json({ success: true, message: `Delete bootcamp ${req.params.id}` });
+  bootcamp
+    .findByIdAndRemove(req.params.id, req.body)
+    .then((data) => {
+      res.status(200).json({ success: true, data: data });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };

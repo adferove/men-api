@@ -1,8 +1,11 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
+const error = require('./api/v1/middleware/error.js');
+
 // Routes
 const bootcamps = require('./api/v1/routes/bootcamps.js');
+
 const connectDB = require('../conf/db.js');
 
 //Load env variables
@@ -16,6 +19,8 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/v1/bootcamps', bootcamps);
+
+app.use(error);
 
 const PORT = process.env.PORT || 5000;
 
