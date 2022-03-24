@@ -3,13 +3,13 @@ const dotenv = require('dotenv');
 const path = require('path');
 const error = require('./api/v1/middleware/error.js');
 
+//Load env variables
+dotenv.config({ path: path.resolve(__dirname, '../conf/conf.env') });
+
 // Routes
 const bootcamps = require('./api/v1/routes/bootcamps.js');
 
 const connectDB = require('../conf/db.js');
-
-//Load env variables
-dotenv.config({ path: path.resolve(__dirname, '../conf/conf.env') });
 
 connectDB();
 
