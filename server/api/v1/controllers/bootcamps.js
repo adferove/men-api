@@ -5,58 +5,40 @@ const asyncHandler = require('../middleware/asyncHandler.js');
 // @route  /api/v1/bootcamps
 // @access Public
 exports.getBootcamps = asyncHandler((req, res, next) => {
-  bootcamp
-    .find()
-    .then((data) => {
-      res.status(200).json({ success: true, data: data });
-    })
-    .catch((err) => {
-      next(err);
-    });
+  return bootcamp.find().then((data) => {
+    res.status(200).json({ success: true, data: data });
+  });
 });
 
 // @desc   Get bootcamp by id
 // @route  /api/v1/bootcamps/:id
 // @access Public
 exports.getBootcampById = asyncHandler((req, res, next) => {
-  bootcamp
-    .findById(req.params.id)
-    .then((data) => {
-      res.status(200).json({ success: true, data: data });
-    })
-    .catch((err) => {
-      next(err);
-    });
+  return bootcamp.findById(req.params.id).then((data) => {
+    res.status(200).json({ success: true, data: data });
+  });
 });
 
 // @desc   Create new bootcamp
 // @route  /api/v1/bootcamps
 // @access Private
 exports.createBootcamp = asyncHandler((req, res, next) => {
-  bootcamp
-    .create(req.body)
-    .then((data) => {
-      res.status(200).json({ success: true, data: data });
-    })
-    .catch((err) => {
-      next(err);
-    });
+  return bootcamp.create(req.body).then((data) => {
+    res.status(200).json({ success: true, data: data });
+  });
 });
 
 // @desc   Update bootcamp by id
 // @route  /api/v1/bootcamps/:id
 // @access Private
 exports.updateBootcampById = asyncHandler((req, res, next) => {
-  bootcamp
+  return bootcamp
     .findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     })
     .then((data) => {
       res.status(200).json({ success: true, data: data });
-    })
-    .catch((err) => {
-      next(err);
     });
 });
 
@@ -64,12 +46,7 @@ exports.updateBootcampById = asyncHandler((req, res, next) => {
 // @route  /api/v1/bootcamps/:id
 // @access Private
 exports.deleteBootcampById = asyncHandler((req, res, next) => {
-  bootcamp
-    .findByIdAndRemove(req.params.id, req.body)
-    .then((data) => {
-      res.status(200).json({ success: true, data: data });
-    })
-    .catch((err) => {
-      next(err);
-    });
+  return bootcamp.findByIdAndRemove(req.params.id, req.body).then((data) => {
+    res.status(200).json({ success: true, data: data });
+  });
 });
