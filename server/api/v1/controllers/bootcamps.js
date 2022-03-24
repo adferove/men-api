@@ -1,9 +1,10 @@
 const bootcamp = require('../models/Bootcamp.js');
+const asyncHandler = require('../middleware/asyncHandler.js');
 
 // @desc   Get all bootcamps
 // @route  /api/v1/bootcamps
 // @access Public
-exports.getBootcamps = (req, res, next) => {
+exports.getBootcamps = asyncHandler((req, res, next) => {
   bootcamp
     .find()
     .then((data) => {
@@ -12,12 +13,12 @@ exports.getBootcamps = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
-};
+});
 
 // @desc   Get bootcamp by id
 // @route  /api/v1/bootcamps/:id
 // @access Public
-exports.getBootcampById = (req, res, next) => {
+exports.getBootcampById = asyncHandler((req, res, next) => {
   bootcamp
     .findById(req.params.id)
     .then((data) => {
@@ -26,12 +27,12 @@ exports.getBootcampById = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
-};
+});
 
 // @desc   Create new bootcamp
 // @route  /api/v1/bootcamps
 // @access Private
-exports.createBootcamp = (req, res, next) => {
+exports.createBootcamp = asyncHandler((req, res, next) => {
   bootcamp
     .create(req.body)
     .then((data) => {
@@ -40,12 +41,12 @@ exports.createBootcamp = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
-};
+});
 
 // @desc   Update bootcamp by id
 // @route  /api/v1/bootcamps/:id
 // @access Private
-exports.updateBootcampById = (req, res, next) => {
+exports.updateBootcampById = asyncHandler((req, res, next) => {
   bootcamp
     .findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -57,12 +58,12 @@ exports.updateBootcampById = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
-};
+});
 
 // @desc   Delete bootcamp by id
 // @route  /api/v1/bootcamps/:id
 // @access Private
-exports.deleteBootcampById = (req, res, next) => {
+exports.deleteBootcampById = asyncHandler((req, res, next) => {
   bootcamp
     .findByIdAndRemove(req.params.id, req.body)
     .then((data) => {
@@ -71,4 +72,4 @@ exports.deleteBootcampById = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
-};
+});
