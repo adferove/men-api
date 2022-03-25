@@ -10,6 +10,12 @@
       "name": "Develop",
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/server/index.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Seeder",
+      "program": "${file}"
     }
   ]
 }
