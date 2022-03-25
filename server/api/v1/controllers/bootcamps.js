@@ -7,13 +7,26 @@ const asyncHandler = require('../middleware/asyncHandler.js');
 // @access Public
 exports.getBootcamps = asyncHandler((req, res, next) => {
   let query;
-  let queryString = JSON.stringify(req.query);
+  let reqQuery = { ...req.query };
+  const removeFields = ['select', 'sort'];
+  removeFields.forEach((param) => delete reqQuery[param]);
+  let queryString = JSON.stringify(reqQuery);
   queryString = queryString.replace(
     /\b(gt|gte|lt|lte|in)\b/g,
     (match) => `$${match}`
   );
 
   query = bootcamp.find(JSON.parse(queryString));
+
+  if (req.query.select) {
+    const fields = req.query.select.split(',').join(' ');
+    query.select(fields);
+  }
+
+  if (req.query.sort) {
+    const fields = req.query.sort.split(',').join(',');
+    query.sort(fields);
+  }
 
   return query.then((data) => {
     res.status(200).json({ success: true, count: data.length, data: data });
