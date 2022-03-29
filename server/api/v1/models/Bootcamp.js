@@ -155,4 +155,4 @@ BootcampSchema.pre('remove', function (next) {
     });
 });
 
-module.exports = mongoose.model('BootCamp', BootcampSchema);
+module.exports = mongoose.model('Bootcamp', BootcampSchema);
