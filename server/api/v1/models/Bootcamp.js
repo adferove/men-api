@@ -140,4 +140,19 @@ BootcampSchema.pre('save', function (next) {
     });
 });
 
+BootcampSchema.virtual('courses', {
+  ref: 'Course',
+  localField: '_id',
+  foreignField: 'bootcamp',
+  justOne: false,
+});
+
+BootcampSchema.pre('remove', function (next) {
+  this.model('Course')
+    .deleteMany({ bootcamp: this._id })
+    .then((data) => {
+      next();
+    });
+});
+
 module.exports = mongoose.model('BootCamp', BootcampSchema);

@@ -17,7 +17,7 @@ exports.getBootcamps = asyncHandler((req, res, next) => {
       (match) => `$${match}`
     );
 
-    query = bootcamp.find(JSON.parse(queryString));
+    query = bootcamp.find(JSON.parse(queryString)).populate('courses');
 
     if (req.query.select) {
       const fields = req.query.select.split(',').join(' ');
@@ -32,7 +32,7 @@ exports.getBootcamps = asyncHandler((req, res, next) => {
     //Pagination
     const pagination = {};
     const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
     const startIndex = (page - 1) * limit;
     const numberOfPages = Math.ceil(docs / limit);
 
@@ -94,8 +94,10 @@ exports.updateBootcampById = asyncHandler((req, res, next) => {
 // @route  /api/v1/bootcamps/:id
 // @access Private
 exports.deleteBootcampById = asyncHandler((req, res, next) => {
-  return bootcamp.findByIdAndDelete(req.params.id, req.body).then((data) => {
-    res.status(200).json({ success: true, data: data });
+  return bootcamp.findById(req.params.id, req.body).then((data) => {
+    data.remove().then((removedBootcamp) => {
+      res.status(200).json({ success: true, data: data });
+    });
   });
 });
 
