@@ -1,4 +1,5 @@
 const Course = require('../models/Course.js');
+const Bootcamp = require('../models/Bootcamp.js');
 const asyncHandler = require('../middleware/asyncHandler.js');
 
 // @desc   Find courses
@@ -31,11 +32,16 @@ exports.getCourseById = asyncHandler((req, res, next) => {
 });
 
 // @desc   Create new course
-// @route  /api/v1/courses
+// @route  /api/v1/bootcamps/:bootcampId/courses
 // @access Private
 exports.createCourse = asyncHandler((req, res, next) => {
-  return Course.create(req.body).then((data) => {
-    res.status(200).json({ success: true, data: data });
+  req.body.bootcamp = req.params.bootcampId;
+  return Bootcamp.findById(req.params.bootcampId).then((bc) => {
+    if (bc) {
+      return Course.create(req.body).then((data) => {
+        res.status(200).json({ success: true, data: data });
+      });
+    }
   });
 });
 
