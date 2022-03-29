@@ -8,6 +8,7 @@ dotenv.config({ path: path.resolve(__dirname, '../conf/conf.env') });
 
 // Routes
 const bootcamps = require('./api/v1/routes/bootcamps.js');
+const courses = require('./api/v1/routes/courses.js');
 
 const connectDB = require('../conf/db.js');
 
@@ -19,6 +20,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/v1/bootcamps', bootcamps);
+app.use('/api/v1/courses', courses);
 
 app.use(error);
 

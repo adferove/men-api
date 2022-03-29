@@ -8,6 +8,7 @@ dotenv.config({ path: path.resolve(__dirname, './conf/conf.env') });
 
 //Load models
 const Bootcamp = require('./server/api/v1/models/Bootcamp.js');
+const Course = require('./server/api/v1/models/Course.js');
 
 //Connect to database
 const connectDB = require('./conf/db.js');
@@ -19,18 +20,27 @@ connectDB();
 const bootcamps = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/bootcamps.json`, 'utf-8')
 );
+const courses = JSON.parse(
+  fs.readFileSync(`${__dirname}/_data/courses.json`, 'utf-8')
+);
 
 const importData = () => {
   Bootcamp.create(bootcamps).then((data) => {
     console.log('Bootcamps created');
-    process.exit(1);
+    Course.create(courses).then((courseData) => {
+      console.log('Courses created');
+      process.exit(1);
+    });
   });
 };
 
 const deleteData = () => {
   Bootcamp.deleteMany().then((data) => {
     console.log('Bootcamps deleted');
-    process.exit(1);
+    Course.deleteMany().then((courseData) => {
+      console.log('Courses deleted');
+      process.exit(1);
+    });
   });
 };
 
