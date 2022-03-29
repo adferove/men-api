@@ -94,7 +94,7 @@ exports.updateBootcampById = asyncHandler((req, res, next) => {
 // @route  /api/v1/bootcamps/:id
 // @access Private
 exports.deleteBootcampById = asyncHandler((req, res, next) => {
-  return bootcamp.findById(req.params.id, req.body).then((data) => {
+  return bootcamp.findById(req.params.id).then((data) => {
     data.remove().then((removedBootcamp) => {
       res.status(200).json({ success: true, data: data });
     });
