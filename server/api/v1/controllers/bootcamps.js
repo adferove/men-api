@@ -1,3 +1,4 @@
+const path = require('path');
 const bootcamp = require('../models/Bootcamp.js');
 const geocoder = require('../../../utils/geocoder.js');
 const asyncHandler = require('../middleware/asyncHandler.js');
@@ -118,5 +119,48 @@ exports.getBootcampsInRadius = asyncHandler((req, res, next) => {
       .then((data) => {
         res.status(200).json({ success: true, data: data });
       });
+  });
+});
+
+// @desc   Bootcamp photo upload
+// @route  /api/v1/bootcamps/:id/photo
+// @access Private
+exports.bootcampPhotoUpload = asyncHandler((req, res, next) => {
+  return bootcamp.findById(req.params.id).then((data) => {
+    if (req.files) {
+      const file = req.files.file;
+      if (file.mimetype.substring(0, 5) === 'image') {
+        if (file.size > process.env.MAX_FILE_UPLOAD) {
+          res.status(400).json({
+            success: false,
+            message: `image file exceeds max size ${process.env.MAX_FILE_UPLOAD}`,
+          });
+        }
+        file.name = `bootcamp_${data._id}${path.parse(file.name).ext}`;
+        const newPath = path.join(
+          __dirname,
+          '..',
+          '..',
+          '..',
+          '..',
+          process.env.FILE_UPLOAD_PATH,
+          file.name
+        );
+        file.mv(newPath, (err) => {
+          if (err) {
+            res.status(400).json({
+              success: false,
+              message: 'Something went wrong saving the image',
+            });
+          } else {
+            res.status(200).json({ success: true, message: newPath });
+          }
+        });
+      }
+    } else {
+      res
+        .status(400)
+        .json({ success: false, message: 'Please upload an image file' });
+    }
   });
 });
