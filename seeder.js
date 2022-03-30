@@ -27,10 +27,10 @@ const courses = JSON.parse(
 const importData = () => {
   Bootcamp.create(bootcamps).then((data) => {
     console.log('Bootcamps created');
-    Course.create(courses).then((courseData) => {
-      console.log('Courses created');
-      process.exit(1);
-    });
+    // Course.create(courses).then((courseData) => {
+    //   console.log('Courses created');
+    process.exit(1);
+    // });
   });
 };
 
