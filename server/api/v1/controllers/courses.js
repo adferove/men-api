@@ -8,13 +8,15 @@ const asyncHandler = require('../middleware/asyncHandler.js');
 // @access Public
 exports.getCourses = asyncHandler((req, res, next) => {
   let params = {};
-  if (req.params.bootcampId) params.bootcamp = req.params.bootcampId;
-
-  return Course.find(params)
-    .populate({ path: 'bootcamp', select: 'name description' })
-    .then((data) => {
-      res.status(200).json({ success: true, count: data.length, data });
-    });
+  if (req.params.bootcampId) {
+    return Course.find(params)
+      .populate({ path: 'bootcamp', select: 'name description' })
+      .then((data) => {
+        res.status(200).json({ success: true, count: data.length, data });
+      });
+  } else {
+    res.status(200).json(res.advancedResults);
+  }
 });
 
 // @desc   Get Course by id

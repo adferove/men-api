@@ -7,8 +7,16 @@ const {
   updateCourseById,
   deleteCourseById,
 } = require('../controllers/courses.js');
+const advancedResults = require('../middleware/advancedResults.js');
+const Course = require('../models/Course.js');
 
-router.route('/').get(getCourses).post(createCourse);
+router
+  .route('/')
+  .get(
+    advancedResults(Course, { path: 'bootcamp', select: 'name description' }),
+    getCourses
+  )
+  .post(createCourse);
 
 router
   .route('/:id')
