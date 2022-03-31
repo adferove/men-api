@@ -1,7 +1,8 @@
 const ErrorResponse = require('../../../utils/errorResponse.js');
 
 module.exports = (err, req, res, next) => {
-  let error = { ...err };
+  let error = err;
+
   if (err.name === 'CastError') {
     error = new ErrorResponse(err.message, 400);
   } else if (err.code === 11000) {

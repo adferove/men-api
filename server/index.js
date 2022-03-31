@@ -10,6 +10,7 @@ dotenv.config({ path: path.resolve(__dirname, '../conf/conf.env') });
 // Routes
 const bootcamps = require('./api/v1/routes/bootcamps.js');
 const courses = require('./api/v1/routes/courses.js');
+const auth = require('./api/v1/routes/auth.js');
 
 const connectDB = require('../conf/db.js');
 
@@ -24,6 +25,7 @@ app.use(fileUpload());
 //Static files
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+app.use('/api/v1/auth', auth);
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
 
