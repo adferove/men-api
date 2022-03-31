@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const fileUpload = require('express-fileupload');
 const error = require('./api/v1/middleware/error.js');
+const cookieParser = require('cookie-parser');
 
 //Load env variables
 dotenv.config({ path: path.resolve(__dirname, '../conf/conf.env') });
@@ -20,6 +21,8 @@ const app = express();
 
 //Body parser
 app.use(express.json());
+//Cookie parser
+app.use(cookieParser());
 //File upload
 app.use(fileUpload());
 //Static files
