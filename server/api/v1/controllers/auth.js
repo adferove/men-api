@@ -58,3 +58,11 @@ const sendTokenResponse = (user, statusCode, res) => {
     token,
   });
 };
+
+// @desc   Get Me
+// @route  GET /api/v1/auth/me
+// @access Private
+exports.getMe = asyncHandler((req, res, next) => {
+  const user = req.user;
+  res.status(200).json({ success: true, user });
+});
