@@ -21,3 +21,18 @@ exports.protectRoute = (req, res, next) => {
     return next(new ErrorResponse('Unauthorized', 401));
   }
 };
+
+exports.authorize =
+  (...roles) =>
+  (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new ErrorResponse(
+          `User with role ${req.user.role} is unauthorized to access the route`,
+          403
+        )
+      );
+    } else {
+      next();
+    }
+  };

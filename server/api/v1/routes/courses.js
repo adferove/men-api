@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-const { protectRoute } = require('../middleware/protectRoute.js');
+const { protectRoute, authorize } = require('../middleware/auth.js');
 const {
   getCourses,
   getCourseById,
@@ -17,12 +17,12 @@ router
     advancedResults(Course, { path: 'bootcamp', select: 'name description' }),
     getCourses
   )
-  .post(protectRoute, createCourse);
+  .post(protectRoute, authorize('publisher', 'admin'), createCourse);
 
 router
   .route('/:id')
   .get(getCourseById)
-  .put(protectRoute, updateCourseById)
-  .delete(protectRoute, deleteCourseById);
+  .put(protectRoute, authorize('publisher', 'admin'), updateCourseById)
+  .delete(protectRoute, authorize('publisher', 'admin'), deleteCourseById);
 
 module.exports = router;
